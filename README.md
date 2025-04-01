@@ -13,12 +13,13 @@
 
 [![Community Forum][forum-shield]][forum]
 
-> [!CAUTION]
-> This integration is in MAINTENANCE MODE.
+> ⚠️ **Note**
 >
-> I no longer have a deco unit so I cannot test this integration properly. I will not implement any new feature requests and will only implement simple fixes required by Home Assistant.
+> This fork is **actively maintained**.
 >
-> If anybody is interested in taking over this repo and maintaining it, please let me know.
+> Enhancements include real-time Home Assistant events (`tplink_deco_device_event`) when Deco-connected devices join or leave the network. These can be used to automate DNS updates, presence detection, and more.
+>
+> Maintained by [@burrellka](https://github.com/burrellka). Contributions are welcome!
 
 ## Functionality
 
@@ -171,54 +172,158 @@ If you prefer new entities to be disabled by default:
 
 ## Notify on new entities
 
-You can get notified by new entities by listening to the `entity_registry_updated` event. Here's an example automation:
+Listening to Deco Device Events
+You can now respond to devices connecting or disconnecting from your TP-Link Deco mesh network by listening to the tplink_deco_device_event. This event is emitted by the integration whenever a client device joins or leaves the network.
 
-```yaml
-- alias: Notify New Wifi Device
+This enables powerful automations such as notifications, DNS updates, access logging, and more — without polling or tracking state manually.
+
+🧪 How to Listen for Device Events
+In Developer Tools → Events, type tplink_deco_device_event into the "Listen to events" box and click "Start Listening". Then, connect or disconnect a device to your Deco network. You should see event data like the following:
+
+json
+Copy
+Edit
+{
+  "event_type": "tplink_deco_device_event",
+  "data": {
+    "mac": "DA-2D-3D-11-24-A7",
+    "name": "KEVIN-s-S24-Ultra _deco_Client",
+    "state": "connected"
+  }
+}
+The state can be "connected" or "disconnected" depending on the event.
+
+📲 Notify When a Device Connects to Deco Wi-Fi
+This automation will send a mobile notification when any Deco-connected client comes online:
+
+yaml
+Copy
+Edit
+- alias: Notify When Deco Device Connects
   mode: parallel
   max: 100
+
   trigger:
     - platform: event
-      event_type: entity_registry_updated
+      event_type: tplink_deco_device_event
       event_data:
-        action: create
+        state: connected
+
   variables:
-    id: "{{ trigger.event.data.entity_id }}"
-  condition:
-    - condition: template
-      value_template: "{{ id.split('.')[0] == 'device_tracker' }}"
-    - condition: template
-      value_template: "{{ id in integration_entities('tplink_deco') }}"
+    name: "{{ trigger.event.data.name }}"
+    mac: "{{ trigger.event.data.mac }}"
+
   action:
-    - alias: Wait a little while to make sure the entity has updated with new state
-      wait_template: "{{ states(id) not in ['unknown', 'unavailable'] }}"
-      timeout:
-        minutes: 1
-    - service: notify.mobile_app_phone
+    - service: notify.mobile_app_yourdevice
       data:
-        title: "{{ state_attr(id, 'friendly_name') or id }} connected to WiFi"
-        message: >-
-          {{ id }} connected to
-          {{ state_attr(id, 'interface') }}
-          {{
-            state_attr(id, 'connection_type')
-              | regex_replace('band', '')
-              | regex_replace('_', '.')
-              | regex_replace('$', 'G')
-          }}
-          through
-          {{ state_attr(id, 'deco_device') }}
+        title: "{{ name or mac }} connected to Wi-Fi"
+        message: "{{ name or mac }} just joined your Deco network."
         data:
           group: wifi-new-device
-          clickAction: "entityId:{{ id }}"
-```
+📴 Notify When a Device Disconnects
+Similarly, this automation notifies you when a client disconnects:
 
-Resulting notification looks like:
+yaml
+Copy
+Edit
+- alias: Notify When Deco Device Disconnects
+  mode: parallel
+  max: 100
 
-```yaml
-title: "Amos Phone connected to WiFi"
-message: "device_tracker.amos_phone_wifi connected to main 5G through Guest Room"
+  trigger:
+    - platform: event
+      event_type: tplink_deco_device_event
+      event_data:
+        state: disconnected
+
+  variables:
+    name: "{{ trigger.event.data.name }}"
+    mac: "{{ trigger.event.data.mac }}"
+
+  action:
+    - service: notify.mobile_app_yourdevice
+      data:
+        title: "{{ name or mac }} disconnected"
+        message: "{{ name or mac }} has disconnected from your Deco Wi-Fi."
+        data:
+          group: wifi-lost-device
+🧠 Pro Tip: Trigger Other Automations
+You can also use this event to:
+
+Log connections to a file
+
+Auto-update custom DNS entries (e.g., with Pi-hole)
+
+Restrict internet access or trigger parental control
+
+Toggle smart switches or other entities based on presence
+
+For example, to trigger a Pi-hole DNS entry injection, your automation might call a rest_command that sends the hostname/IP pair to an internal service.
 ```
+Trigger External Action When Deco Device Connects
+This integration emits the tplink_deco_device_event whenever a client device connects or disconnects from your Deco mesh network.
+
+You can use this event to trigger automations, notify users, or send data to an external service or API.
+
+📡 Event Format
+The event name is tplink_deco_device_event and includes the following data:
+
+json
+Copy
+Edit
+{
+  "mac": "DA-2D-3D-11-24-A7",
+  "name": "John-iPhone_deco_Client",
+  "state": "connected"
+}
+Possible values for state:
+
+"connected"
+
+"disconnected"
+
+⚡ Example: Send Device Connection Info to an External API
+This automation listens for Deco connection events and sends a GET request to a custom HTTP endpoint when a client joins the network:
+
+yaml
+Copy
+Edit
+- alias: Notify external system when Deco client connects
+  description: Trigger an API call when a Deco-connected device joins the network
+  trigger:
+    - platform: event
+      event_type: tplink_deco_device_event
+      event_data:
+        state: connected
+
+  variables:
+    ip: "{{ state_attr('device_tracker.' ~ trigger.event.data.name | lower | replace(' ', '_'), 'ip') }}"
+    hostname: "{{ trigger.event.data.name | lower | replace(' ', '-') | regex_replace('[^a-z0-9-]', '') }}"
+
+  condition:
+    - "{{ ip is defined and ip.startswith('192.168.') }}"
+
+  action:
+    - service: rest_command.notify_external_service
+      data:
+        ip: "{{ ip }}"
+        hostname: "{{ hostname }}"
+    - service: logbook.log
+      data:
+        name: External Integration Triggered
+        message: "Sent {{ hostname }} -> {{ ip }} to external system"
+
+  mode: queued
+You’ll also need this REST command in your configuration.yaml or set via the UI:
+
+yaml
+Copy
+Edit
+rest_command:
+  notify_external_service:
+    url: "http://your-api-endpoint.local/notify?ip={{ ip }}&hostname={{ hostname }}"
+    method: GET
+📝 Replace the URL above with the endpoint of your own service or integration.
 
 ## Tested Devices
 

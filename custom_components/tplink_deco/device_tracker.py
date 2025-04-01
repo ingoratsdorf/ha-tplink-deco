@@ -420,7 +420,13 @@ class TplinkDecoClientDeviceTracker(CoordinatorEntity, RestoreEntity, ScannerEnt
         is_now_connected = self._client.online
 
         if is_now_connected != was_connected:
-            self._fire_device_event(is_now_connected)
+            event_data = {
+                "mac": self._mac_address,
+                "name": self._attr_name,
+                "state": "connected" if is_now_connected else "disconnected",
+            }
+            _LOGGER.warning("[DecoClientDeviceTracker] Firing event: %s", event_data)
+            self.hass.bus.async_fire("tplink_deco_device_event", event_data)
             self._last_connected_state = is_now_connected
 
         if self._update_from_client():
