@@ -332,6 +332,7 @@ class TplinkDecoClientDeviceTracker(CoordinatorEntity, RestoreEntity, ScannerEnt
         self._client_prefix = client_prefix
         self._coordinator_decos = coordinator_decos
         self._mac_address = client.mac
+        self._last_connected_state = client.online  # Track last connection state
         self._update_from_client()
         super().__init__(coordinator_clients)
 
@@ -405,8 +406,29 @@ class TplinkDecoClientDeviceTracker(CoordinatorEntity, RestoreEntity, ScannerEnt
         await self.coordinator.async_request_refresh()
 
     @callback
+    def _fire_device_event(self, connected: bool) -> None:
+        self.hass.bus.async_fire("tplink_deco_device_event", {
+            "mac": self._client.mac,
+            "name": self._client.name,
+            "state": "connected" if connected else "disconnected",
+        })
+
+    @callback
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
+        was_connected = self._last_connected_state
+        is_now_connected = self._client.online
+
+        if is_now_connected != was_connected:
+            event_data = {
+                "mac": self._mac_address,
+                "name": self._attr_name,
+                "state": "connected" if is_now_connected else "disconnected",
+            }
+            _LOGGER.warning("[DecoClientDeviceTracker] Firing event: %s", event_data)
+            self.hass.bus.async_fire("tplink_deco_device_event", event_data)
+            self._last_connected_state = is_now_connected
+
         if self._update_from_client():
             self.async_write_ha_state()
 
