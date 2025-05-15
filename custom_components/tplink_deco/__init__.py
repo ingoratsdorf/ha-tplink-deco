@@ -2,7 +2,7 @@
 Custom integration to integrate TP-Link Deco with Home Assistant.
 
 For more details about this integration, please refer to
-https://github.com/amosyuen/ha-tplink-deco
+https://github.com/ingoratsdorf/ha-tplink-deco
 """
 
 import asyncio

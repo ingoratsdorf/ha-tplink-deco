@@ -2,7 +2,7 @@
   "config": {
     "step": {
       "user": {
-        "description": "Použite poverenia pre webový portál správcu. Pozri https://github.com/amosyuen/ha-tplink-deco#configuration-important-please-read",
+        "description": "Použite poverenia pre webový portál správcu. Pozri https://github.com/ingoratsdorf/ha-tplink-deco#configuration-important-please-read",
         "data": {
           "host": "Host",
           "username": "užívateľské meno",
@@ -19,7 +19,7 @@
         }
       },
       "reauth_confirm": {
-        "description": "Problém s prihlasovacími údajmi. Pozri https://github.com/amosyuen/ha-tplink-deco#login-credentials",
+        "description": "Problém s prihlasovacími údajmi. Pozri https://github.com/ingoratsdorf/ha-tplink-deco#login-credentials",
         "data": {
           "username": "Užívateľské meno",
           "password": "Heslo"
@@ -39,7 +39,7 @@
   "options": {
     "step": {
       "init": {
-        "description": "Použite poverenia pre webový portál správcu. Pozri https://github.com/amosyuen/ha-tplink-deco#configuration-important-please-read",
+        "description": "Použite poverenia pre webový portál správcu. Pozri https://github.com/ingoratsdorf/ha-tplink-deco#configuration-important-please-read",
         "data": {
           "host": "Host",
           "username": "Užívateľské meno",

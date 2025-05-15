@@ -29,7 +29,7 @@ class TimeoutException(Exception):
     def __init__(self, message=""):
         super().__init__(
             "Timeout exception. If you get a lot of these see"
-            f" https://github.com/amosyuen/ha-tplink-deco#timeout-error. {message}"
+            f" https://github.com/ingoratsdorf/ha-tplink-deco#timeout-error. {message}"
         )
 
 

@@ -358,9 +358,13 @@ You may see extra devices show up under the Tp-Link deco integration as per http
 
 ## Contributions are welcome!
 
-If you want to contribute to this please read the [Contribution guidelines](https://github.com/amosyuen/ha-tplink-deco/blob/main/CONTRIBUTING.md)
+If you want to contribute to this please read the [Contribution guidelines](https://github.com/ingoratsdorf/ha-tplink-deco/blob/main/CONTRIBUTING.md)
 
 ## Credits
+
+Forked from [@amosyuen](https://github.com/amosyuen/ha-tplink-deco) who has done an amazing work with this. All credit to them.
+Integrated events by [@burrellka](https://github.com/burrellka).
+Added Slavic language translation by [@misa1515](https://github.com/misa1515/ha-tplink-deco/activity?ref=patch-5)
 
 This project was generated from [@oncleben31](https://github.com/oncleben31)'s [Home Assistant Custom Component Cookiecutter](https://github.com/oncleben31/cookiecutter-homeassistant-custom-component) template.
 
@@ -374,7 +378,7 @@ Code template was mainly taken from [@Ludeeus](https://github.com/ludeeus)'s [in
 [buymecoffee]: https://paypal.me/amosyuen
 [buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
 [commits-shield]: https://img.shields.io/github/commit-activity/y/amosyuen/ha-tplink-deco.svg?style=for-the-badge
-[commits]: https://github.com/amosyuen/ha-tplink-deco/commits/main
+[commits]: https://github.com/ingoratsdorf/ha-tplink-deco/commits/main
 [hacs]: https://hacs.xyz
 [hacsbadge]: https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge
 [exampleimg]: example.png
@@ -385,5 +389,5 @@ Code template was mainly taken from [@Ludeeus](https://github.com/ludeeus)'s [in
 [pre-commit]: https://github.com/pre-commit/pre-commit
 [pre-commit-shield]: https://img.shields.io/badge/pre--commit-enabled-brightgreen?style=for-the-badge
 [releases-shield]: https://img.shields.io/github/release/amosyuen/ha-tplink-deco.svg?style=for-the-badge
-[releases]: https://github.com/amosyuen/ha-tplink-deco/releases
+[releases]: https://github.com/ingoratsdorf/ha-tplink-deco/releases
 [user_profile]: https://github.com/amosyuen

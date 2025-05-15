@@ -361,7 +361,7 @@ class TplinkDecoApi:
             raise LoginForbiddenException(
                 (
                     "Login auth error. Likely caused by logging in with admin account on another device."
-                    " See https://github.com/amosyuen/ha-tplink-deco#manager-account."
+                    " See https://github.com/ingoratsdorf/ha-tplink-deco#manager-account."
                 )
             ) from err
 

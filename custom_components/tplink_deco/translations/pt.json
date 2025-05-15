@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "TP-Link Deco",
-        "description": "Use as credenciais para o portal da Web do administrador. Veja https://github.com/amosyuen/ha-tplink-deco#configuration-important-please-read",
+        "description": "Use as credenciais para o portal da Web do administrador. Veja https://github.com/ingoratsdorf/ha-tplink-deco#configuration-important-please-read",
         "data": {
           "host": "Host",
           "username": "Nome de utilizador",
@@ -30,7 +30,7 @@
     "step": {
       "user": {
         "title": "TP-Link Deco",
-        "description": "Use as credenciais para o portal da Web do administrador. Veja https://github.com/amosyuen/ha-tplink-deco#configuration-important-please-read",
+        "description": "Use as credenciais para o portal da Web do administrador. Veja https://github.com/ingoratsdorf/ha-tplink-deco#configuration-important-please-read",
         "data": {
           "host": "Host",
           "username": "Nome de utilizador",
