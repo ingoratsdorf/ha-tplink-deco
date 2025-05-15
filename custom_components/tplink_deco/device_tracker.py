@@ -407,11 +407,14 @@ class TplinkDecoClientDeviceTracker(CoordinatorEntity, RestoreEntity, ScannerEnt
 
     @callback
     def _fire_device_event(self, connected: bool) -> None:
-        self.hass.bus.async_fire("tplink_deco_device_event", {
-            "mac": self._client.mac,
-            "name": self._client.name,
-            "state": "connected" if connected else "disconnected",
-        })
+        self.hass.bus.async_fire(
+            "tplink_deco_device_event",
+            {
+                "mac": self._client.mac,
+                "name": self._client.name,
+                "state": "connected" if connected else "disconnected",
+            },
+        )
 
     @callback
     def _handle_coordinator_update(self) -> None:
