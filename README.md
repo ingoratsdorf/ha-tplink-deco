@@ -180,9 +180,7 @@ This enables powerful automations such as notifications, DNS updates, access log
 🧪 How to Listen for Device Events
 In Developer Tools → Events, type tplink_deco_device_event into the "Listen to events" box and click "Start Listening". Then, connect or disconnect a device to your Deco network. You should see event data like the following:
 
-json
-Copy
-Edit
+```json
 {
   "event_type": "tplink_deco_device_event",
   "data": {
@@ -191,14 +189,13 @@ Edit
     "state": "connected"
   }
 }
+```
 The state can be "connected" or "disconnected" depending on the event.
 
 📲 Notify When a Device Connects to Deco Wi-Fi
 This automation will send a mobile notification when any Deco-connected client comes online:
 
-yaml
-Copy
-Edit
+```yaml
 - alias: Notify When Deco Device Connects
   mode: parallel
   max: 100
@@ -220,12 +217,11 @@ Edit
         message: "{{ name or mac }} just joined your Deco network."
         data:
           group: wifi-new-device
+```
 📴 Notify When a Device Disconnects
 Similarly, this automation notifies you when a client disconnects:
 
-yaml
-Copy
-Edit
+```jaml
 - alias: Notify When Deco Device Disconnects
   mode: parallel
   max: 100
@@ -247,6 +243,7 @@ Edit
         message: "{{ name or mac }} has disconnected from your Deco Wi-Fi."
         data:
           group: wifi-lost-device
+```
 🧠 Pro Tip: Trigger Other Automations
 You can also use this event to:
 
@@ -259,7 +256,7 @@ Restrict internet access or trigger parental control
 Toggle smart switches or other entities based on presence
 
 For example, to trigger a Pi-hole DNS entry injection, your automation might call a rest_command that sends the hostname/IP pair to an internal service.
-```
+
 Trigger External Action When Deco Device Connects
 This integration emits the tplink_deco_device_event whenever a client device connects or disconnects from your Deco mesh network.
 
@@ -268,14 +265,13 @@ You can use this event to trigger automations, notify users, or send data to an 
 📡 Event Format
 The event name is tplink_deco_device_event and includes the following data:
 
-json
-Copy
-Edit
+```json
 {
   "mac": "DA-2D-3D-11-24-A7",
   "name": "John-iPhone_deco_Client",
   "state": "connected"
 }
+```
 Possible values for state:
 
 "connected"
@@ -285,9 +281,7 @@ Possible values for state:
 ⚡ Example: Send Device Connection Info to an External API
 This automation listens for Deco connection events and sends a GET request to a custom HTTP endpoint when a client joins the network:
 
-yaml
-Copy
-Edit
+```yaml
 - alias: Notify external system when Deco client connects
   description: Trigger an API call when a Deco-connected device joins the network
   trigger:
@@ -314,15 +308,15 @@ Edit
         message: "Sent {{ hostname }} -> {{ ip }} to external system"
 
   mode: queued
+```
 You’ll also need this REST command in your configuration.yaml or set via the UI:
 
-yaml
-Copy
-Edit
+```yaml
 rest_command:
   notify_external_service:
     url: "http://your-api-endpoint.local/notify?ip={{ ip }}&hostname={{ hostname }}"
     method: GET
+```
 📝 Replace the URL above with the endpoint of your own service or integration.
 
 ## Tested Devices
