@@ -20,6 +20,7 @@
 > Enhancements include real-time Home Assistant events (`tplink_deco_device_event`) when Deco-connected devices join or leave the network. These can be used to automate DNS updates, presence detection, and more.
 >
 > Maintained by [@ingoratsdorf](https://github.com/ingoratsdorf). Contributions are welcome!
+>
 > Based on works of [@burrellka](https://github.com/burrellka) which was based on works of [@amosyuen](https://github.com/amosyuen).
 
 ## Functionality
