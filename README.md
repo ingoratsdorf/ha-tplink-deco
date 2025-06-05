@@ -19,7 +19,8 @@
 >
 > Enhancements include real-time Home Assistant events (`tplink_deco_device_event`) when Deco-connected devices join or leave the network. These can be used to automate DNS updates, presence detection, and more.
 >
-> Maintained by [@burrellka](https://github.com/burrellka). Contributions are welcome!
+> Maintained by [@ingoratsdorf](https://github.com/ingoratsdorf). Contributions are welcome!
+> Based on works of [@burrellka](https://github.com/burrellka) which was based on works of [@amosyuen](https://github.com/amosyuen).
 
 ## Functionality
 
@@ -190,6 +191,7 @@ In Developer Tools → Events, type tplink_deco_device_event into the "Listen to
   }
 }
 ```
+
 The state can be "connected" or "disconnected" depending on the event.
 
 📲 Notify When a Device Connects to Deco Wi-Fi
@@ -218,6 +220,7 @@ This automation will send a mobile notification when any Deco-connected client c
         data:
           group: wifi-new-device
 ```
+
 📴 Notify When a Device Disconnects
 Similarly, this automation notifies you when a client disconnects:
 
@@ -244,6 +247,7 @@ Similarly, this automation notifies you when a client disconnects:
         data:
           group: wifi-lost-device
 ```
+
 🧠 Pro Tip: Trigger Other Automations
 You can also use this event to:
 
@@ -272,6 +276,7 @@ The event name is tplink_deco_device_event and includes the following data:
   "state": "connected"
 }
 ```
+
 Possible values for state:
 
 "connected"
@@ -309,6 +314,7 @@ This automation listens for Deco connection events and sends a GET request to a 
 
   mode: queued
 ```
+
 You’ll also need this REST command in your configuration.yaml or set via the UI:
 
 ```yaml
@@ -317,6 +323,7 @@ rest_command:
     url: "http://your-api-endpoint.local/notify?ip={{ ip }}&hostname={{ hostname }}"
     method: GET
 ```
+
 📝 Replace the URL above with the endpoint of your own service or integration.
 
 ## Tested Devices
